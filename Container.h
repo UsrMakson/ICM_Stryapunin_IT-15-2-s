@@ -1,18 +1,17 @@
 #pragma once
 
-#include <stdexcept>
+struct Node {
+    int type;
+    Node* next;
+};
 
-class Container
-{
+typedef Node* PNode;
+
+class Container {
 private:
-    struct Node {
-        int type;
-        Node* next;
-    };
-    typedef Node* PNode;
     PNode head;
-    void change_size(int n);
     int ki;
+
 public:
     Container();
     ~Container();
@@ -21,7 +20,7 @@ public:
     void add(int number);
     int show(int number) const;
     int size();
+    void change_size(int n);
     bool correct_analis();
     void clear();
 };
-

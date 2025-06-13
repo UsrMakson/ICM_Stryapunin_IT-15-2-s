@@ -1,13 +1,11 @@
 #include "Container.h"
 
-Container::Container()
-    : head(nullptr)
-    , ki(0)
-{
+Container::Container() {
+    head = nullptr;
+    ki = 0;
 }
 
-Container::~Container()
-{
+Container::~Container() {
     PNode P = head;
     while (P != nullptr) {
         PNode P1 = P->next;
@@ -17,8 +15,7 @@ Container::~Container()
     head = nullptr;
 }
 
-void Container::push_top(int number)
-{
+void Container::push_top(int number) {
     PNode P = new Node;
     P->type = number;
     P->next = head;
@@ -26,8 +23,7 @@ void Container::push_top(int number)
     ki++;
 }
 
-void Container::delete_top()
-{
+void Container::delete_top() {
     if (head == nullptr) return;
     PNode temp = head;
     head = head->next;
@@ -35,21 +31,17 @@ void Container::delete_top()
     ki--;
 }
 
-void Container::add(int number)
-{
+void Container::add(int number) {
     PNode P2 = new Node;
     P2->type = number;
     P2->next = nullptr;
 
-    if (head == nullptr)
-    {
+    if (head == nullptr) {
         head = P2;
     }
-    else
-    {
+    else {
         PNode P1 = head;
-        while (P1->next != nullptr)
-        {
+        while (P1->next != nullptr) {
             P1 = P1->next;
         }
         P1->next = P2;
@@ -57,54 +49,51 @@ void Container::add(int number)
     ki++;
 }
 
-int Container::show(int number) const 
-{
+int Container::show(int number) const {
+    if (head == nullptr || number < 0) return -1;
+
     PNode P = head;
-    for (int i = 0; i < number; ++i) 
-    {
+    for (int i = 0; i < number && P != nullptr; ++i) {
         P = P->next;
     }
+
+    if (P == nullptr) return -1;
     return P->type;
 }
 
-int Container::size()
-{
+int Container::size() {
     return ki;
 }
 
-void Container::change_size(int n)
-{
-    if (n == -1)
-    {
+void Container::change_size(int n) {
+    if (n == -1) {
         ki--;
     }
-    else if (n == 1)
-    {
+    else if (n == 1) {
         ki++;
     }
-    else
-    {
+    else {
         ki = n;
     }
 }
 
-bool Container::correct_analis()
-{
-    if (show(0) == ki)
-    {
-        return true;
+bool Container::correct_analis() {
+    if (ki == 0) return true;
+
+    int target_type = 1;
+    PNode P = head;
+    while (P != nullptr) {
+        if (P->type != target_type) {
+            return false;
+        }
+        P = P->next;
     }
-    else
-    {
-        return false;
-    }
+    return true;
 }
 
-void Container::clear()
-{
+void Container::clear() {
     PNode P = head;
-    while (head != nullptr) 
-    {
+    while (head != nullptr) {
         PNode P = head;
         head = head->next;
         delete P;
