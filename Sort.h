@@ -8,6 +8,6 @@ using namespace std;
 class Sort
 {
 public:
-	void sort_Container(vector<Container*> stack, int n);
+	void sort_Container(vector<Container*> stack, int n);// сортировка
 };
 

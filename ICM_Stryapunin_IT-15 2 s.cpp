@@ -20,9 +20,9 @@ int main() {
     Analysis::sub(0);
     cout << "(входные данные)\n";
 
-    n = Analysis::get_cin_n();
+    n = Analysis::get_cin_n();// n
 
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++) { // задать n контейнеров
         vector<int> arr = Analysis::get_cin(n);
         Container* container = new Container();
         for (int type : arr) {
