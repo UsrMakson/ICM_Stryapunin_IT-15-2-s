@@ -1,5 +1,6 @@
 #include "Container.h"
 
+#include <stdexcept>
 
 Container::Container() 
 	: head(nullptr)
@@ -16,32 +17,28 @@ Container::~Container()
     }
     head = nullptr;
 }
-void Container::push_top(int number)
-{
-    PNode P = nullptr;
-    P = new Node;
-    P->type = number;
-    P->next = head;
+void Container::push_top(int number) {
+    PNode P = new Node{ number, head };
     head = P;
     ki++;
 }
-void Container::delete_top()
-{
-    if (head == nullptr) return;
 
-    if (head->next == nullptr) {
-        delete head;
-        head = nullptr;
-    }
-    else {
-        PNode P = head;
-        while (P->next->next != nullptr) {
-            P = P->next;
-        }
-        delete P->next;
-        P->next = nullptr;
-    }
+void Container::delete_top() {
+    if (head == nullptr) return;
+    PNode temp = head;
+    head = head->next;
+    delete temp;
     ki--;
+}
+
+int Container::show(int index) const {
+    if (head == nullptr || index < 0) throw std::out_of_range("Invalid index");
+    PNode current = head;
+    for (int i = 0; i < index; ++i) {
+        current = current->next;
+        if (current == nullptr) throw std::out_of_range("Index out of bounds");
+    }
+    return current->type;
 }
 void Container::add(int number)
 {
@@ -63,13 +60,6 @@ void Container::add(int number)
         P1->next = P2;
     }
     ki++;
-}
-int Container::show(int number) const {
-    PNode P = head;
-    for (int i = 0; i < number; ++i) {
-        P = P->next;
-    }
-    return P->type;
 }
 int Container::size()
 {

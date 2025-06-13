@@ -21,56 +21,50 @@ void Analysis::sub(int code) {
     }
 }
 
-int Analysis::get_cin_n()
-{
+int Analysis::get_cin_n() {
     string temp;
-    while (true)
-    {
-        cin >> temp;
-        int number;
-        if (temp == "help")
-        {
+    while (true) {
+        getline(cin, temp);
+        if (temp == "help") {
             sub(1);
+            continue;
         }
-        else
-        {
-            istringstream iss(temp);
-            bool is_valid = (iss >> number) && iss.eof();
-            bool in_range = (number >= 0) && (number <= 500);
-            if (is_valid && in_range)
-            {
-                return number;
-            }
-            else
-            {
-                cout << "\nПерепишите:\n";
-            }
+        istringstream iss(temp);
+        int number;
+        if (iss >> number && number >= 1 && number <= 500) {
+            return number;
         }
+        cout << "Некорректный ввод. Повторите: ";
     }
-} 
+}
 
-vector<int> Analysis::get_cin(int max_ki_temp) {
+vector<int> Analysis::get_cin(int n) {
     vector<int> result;
     string temp;
     while (true) {
         getline(cin, temp);
         istringstream iss(temp);
-        int ki_temp;
-        if (!(iss >> ki_temp) || ki_temp < 0 || ki_temp > 500) {
+        int number;
+        result.clear();
+
+        while (iss >> number) {
+            result.push_back(number);
+        }
+        if (result.empty()) {
             cout << "Повторите:\n";
             continue;
         }
 
-        int number;
-        while (iss >> number) {
-            if (number >= 0 && number <= max_ki_temp)
-                result.push_back(number);
+        int ki = result[0];
+        if (ki < 0 || ki > 500) {
+            cout << "Повторите:\n";
+            continue;
         }
 
-        if (result.size() == static_cast<size_t>(ki_temp))
-            return result;
+        if (!result.empty() && result.size() > 1) {
+            return { result.begin() + 1, result.end() };
+        }
 
         cout << "Повторите:\n";
-        result.clear();
     }
 }
