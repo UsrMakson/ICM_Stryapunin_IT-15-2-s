@@ -1,4 +1,7 @@
 #pragma once
+
+#include <stdexcept>
+
 class Container
 {
 private:

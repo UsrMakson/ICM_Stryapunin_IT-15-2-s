@@ -1,12 +1,11 @@
 #include "analysis.h"
-
 #include <iostream>
 #include <sstream>
 
-
 using namespace std;
 
-void Analysis::sub(int code) {
+void Analysis::sub(int code) 
+{
     if (code == 0)
     {
         cout << "\n--------------------------------------------------------------------\n";
@@ -21,50 +20,56 @@ void Analysis::sub(int code) {
     }
 }
 
-int Analysis::get_cin_n() {
+int Analysis::get_cin_n() 
+{
     string temp;
-    while (true) {
+    while (true) 
+    {
         getline(cin, temp);
-        if (temp == "help") {
+        if (temp == "help") 
+        {
             sub(1);
             continue;
         }
         istringstream iss(temp);
         int number;
-        if (iss >> number && number >= 1 && number <= 500) {
+        if (iss >> number && number >= 1 && number <= 500) 
+        {
             return number;
         }
         cout << "Некорректный ввод. Повторите: ";
     }
 }
 
-vector<int> Analysis::get_cin(int n) {
+vector<int> Analysis::get_cin(int n) 
+{
     vector<int> result;
     string temp;
     while (true) {
         getline(cin, temp);
         istringstream iss(temp);
-        int number;
+        int ki;
+        if (!(iss >> ki) || ki < 0 || ki > 500) 
+        {
+            cout << "Некорректное количество контейнеров. Повторите:\n";
+            continue;
+        }
         result.clear();
-
+        int number;
         while (iss >> number) {
+            if (number < 1 || number > n) 
+            {
+                cout << "Повторите:\n";
+                result.clear();
+                break;
+            }
             result.push_back(number);
         }
-        if (result.empty()) {
-            cout << "Повторите:\n";
-            continue;
+        if (result.size() == static_cast<size_t>(ki)) 
+        {
+            return result;
         }
 
-        int ki = result[0];
-        if (ki < 0 || ki > 500) {
-            cout << "Повторите:\n";
-            continue;
-        }
-
-        if (!result.empty() && result.size() > 1) {
-            return { result.begin() + 1, result.end() };
-        }
-
-        cout << "Повторите:\n";
+        cout << "Неверное количество элементов. Ожидалось " << ki << ", получено " << result.size() << ". Повторите: ";
     }
 }

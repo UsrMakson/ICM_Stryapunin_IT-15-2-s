@@ -1,12 +1,11 @@
 #include "Container.h"
 
-#include <stdexcept>
-
-Container::Container() 
-	: head(nullptr)
-	, ki(0) 
+Container::Container()
+    : head(nullptr)
+    , ki(0)
 {
 }
+
 Container::~Container()
 {
     PNode P = head;
@@ -17,13 +16,18 @@ Container::~Container()
     }
     head = nullptr;
 }
-void Container::push_top(int number) {
-    PNode P = new Node{ number, head };
+
+void Container::push_top(int number)
+{
+    PNode P = new Node;
+    P->type = number;
+    P->next = head;
     head = P;
     ki++;
 }
 
-void Container::delete_top() {
+void Container::delete_top()
+{
     if (head == nullptr) return;
     PNode temp = head;
     head = head->next;
@@ -31,15 +35,6 @@ void Container::delete_top() {
     ki--;
 }
 
-int Container::show(int index) const {
-    if (head == nullptr || index < 0) throw std::out_of_range("Invalid index");
-    PNode current = head;
-    for (int i = 0; i < index; ++i) {
-        current = current->next;
-        if (current == nullptr) throw std::out_of_range("Index out of bounds");
-    }
-    return current->type;
-}
 void Container::add(int number)
 {
     PNode P2 = new Node;
@@ -53,7 +48,7 @@ void Container::add(int number)
     else
     {
         PNode P1 = head;
-        while (P1->next != nullptr) 
+        while (P1->next != nullptr)
         {
             P1 = P1->next;
         }
@@ -61,10 +56,22 @@ void Container::add(int number)
     }
     ki++;
 }
+
+int Container::show(int number) const 
+{
+    PNode P = head;
+    for (int i = 0; i < number; ++i) 
+    {
+        P = P->next;
+    }
+    return P->type;
+}
+
 int Container::size()
 {
     return ki;
 }
+
 void Container::change_size(int n)
 {
     if (n == -1)
@@ -80,6 +87,7 @@ void Container::change_size(int n)
         ki = n;
     }
 }
+
 bool Container::correct_analis()
 {
     if (show(0) == ki)
@@ -91,10 +99,12 @@ bool Container::correct_analis()
         return false;
     }
 }
+
 void Container::clear()
 {
     PNode P = head;
-    while (head != nullptr) {
+    while (head != nullptr) 
+    {
         PNode P = head;
         head = head->next;
         delete P;
