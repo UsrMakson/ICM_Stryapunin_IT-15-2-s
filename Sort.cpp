@@ -1,89 +1,47 @@
 #include "Sort.h"
-
+#include <vector>
 #include <iostream>
-
 using namespace std;
 
-void Sort::sort_Container(vector<Container*> stack, int n)
-{
+bool canMoveTo(const vector<Container*>& stack, int from, int to) {
+    if (stack[from]->size() == 0) return false;
+    int top = stack[from]->show(0);
+    if (to >= 0 && to < stack.size() && to != from) {
+        if (stack[to]->size() == 0) return true;
+        int targetTop = stack[to]->show(0);
+        return top < targetTop;
+    }
+    return false;
+}
+
+void move(vector<Container*>& stack, int from, int to) {
+    int top = stack[from]->show(0);
+    stack[from]->delete_top();
+    stack[to]->push_top(top);
+    cout << (from + 1) << " " << (to + 1) << endl;
+}
+
+void Sort::sort_Container(vector<Container*>& stack, int n) {
     bool moved_something = true;
     int iterations = 0;
-
-    while (moved_something && iterations < 1000)
-    {
+    while (moved_something && iterations < 1000) {
         moved_something = false;
         iterations++;
-        for (int i = 0; i < n; i++)
-        {
-            if (stack[i]->size() > 0)
-            {
-                int top_element = stack[i]->show(0);
-                int correct_stack = top_element - 1;
-                if (correct_stack >= 0 && correct_stack < n && correct_stack != i) 
-                {
-                    bool can_move = false;
-                    if (stack[correct_stack]->size() == 0) 
-                    {
-                        can_move = true;
-                    }
-                    else 
-                    {
-                        int target_top = stack[correct_stack]->show(0);
-                        if (top_element < target_top) 
-                        {
-                            can_move = true;
-                        }
-                    }
-                    if (can_move)
-                    {
-                        stack[i]->delete_top();
-                        stack[correct_stack]->push_top(top_element);
-                        cout << (i + 1) << " " << (correct_stack + 1) << "\n";
-                        moved_something = true;
-                        break;
-                    }
-                }
+        for (int i = 0; i < n && !moved_something; i++) {
+            if (stack[i]->size() == 0) continue;
+            int top = stack[i]->show(0);
+            int correct = top - 1;
+            if (canMoveTo(stack, i, correct)) {
+                move(stack, i, correct);
+                moved_something = true;
+                break;
             }
-        }
-        if (!moved_something)
-        {
-            for (int i = 0; i < n && !moved_something; i++)
-            {
-                if (stack[i]->size() > 0) {
-                    int top_element = stack[i]->show(0);
-                    int correct_stack = top_element - 1;
-
-                    if (correct_stack >= 0 && correct_stack < n && correct_stack != i)
-                    {
-                        for (int j = 0; j < n; j++)
-                        {
-                            if (j != i) {
-                                bool can_move = false;
-
-                                if (stack[j]->size() == 0)
-                                {
-                                    can_move = true;
-                                }
-                                else
-                                {
-                                    int target_top = stack[j]->show(0);
-                                    if (top_element < target_top)
-                                    {
-                                        can_move = true;
-                                    }
-                                }
-
-                                if (can_move)
-                                {
-                                    stack[i]->delete_top();
-                                    stack[j]->push_top(top_element);
-                                    cout << (i + 1) << " " << (j + 1) << "\n";
-                                    moved_something = true;
-                                    break;
-                                }
-                            }
-                        }
-                    }
+            for (int j = 0; j < n && !moved_something; j++) {
+                if (j == correct || j == i) continue;
+                if (canMoveTo(stack, i, j)) {
+                    move(stack, i, j);
+                    moved_something = true;
+                    break;
                 }
             }
         }
